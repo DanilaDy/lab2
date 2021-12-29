@@ -58,24 +58,18 @@ with open('anime.csv', newline='', encoding='utf-8') as csvfile:
                 if (k == 'Tags') or (k == 'Studios'):
                     list = row[k].split(', ')
                     answer_list = answer[k].split(', ')
-                    if set(answer_list).issubset(set(list)):
-                        acceptable = acceptable and True
-                    else:
-                        acceptable = acceptable and False
+                    if not(set(answer_list).issubset(set(list))):
+                        acceptable = False
                 if (k == 'Type') or (k == 'Finished') or (k == 'StartYear') or (k == 'EndYear'):
-                    if answer[k] == row[k]:
-                        acceptable = acceptable and True
-                    else:
-                        acceptable = acceptable and False
+                    if answer[k] != row[k]:
+                        acceptable = False
                 if k == 'Episodes':
                     if row[k] == 'Unknown':
                         episodes = float(0)
                     else:
                         episodes = float(row[k])
-                    if episodes >= float(answer[k]):
-                        acceptable = acceptable and True
-                    else:
-                        acceptable = acceptable and False
+                    if episodes < float(answer[k]):
+                        acceptable = False
         if acceptable:
             if row['Rating Score'] == 'Unknown':
                 anime_list.append([float(0), row['Url'], row['Name']])
